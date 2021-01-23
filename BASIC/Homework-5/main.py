@@ -39,7 +39,7 @@ def get_people(number, documents):
 def search_document(number, directories):
     document = f"документ №{number} не найден"
     number_ = str(number)
-    for i, doc in enumerate(directories):
+    for i, doc in directories.items():
         if number_ in doc:
             document = f"документ №{number} на полке №{i + 1}"
             break
@@ -67,6 +67,39 @@ def add_document(type_doc="", name_person="", number="", direct="", documents=""
     documents.append({"type": type_doc, "number": number, "name": name_person})
     directories[direct].append(number)
     return "Данные добавлены"
+
+
+def move_document(number, direct, directories):
+    out_line = f"документ №{number} не найден"
+    if not direct in directories:
+        yes_or_no = input("Нет такой полки. Ходите добавить новую полку с таким идентификатором? (y/n): ").lower()
+        if yes_or_no in ("y", "yes", "да", "д"):
+            print(add_shelf(direct, directories))
+        else:
+            return "Документы не добавлены"
+    for id, line in directories.items():
+        if number in line:
+            directories[id].remove(number)
+            directories[direct].append(number)
+            out_line = f"документ №{number} перемещён на полдку №{direct}"
+            break
+    return out_line
+
+
+def delete_line(number, documents, directories):
+    out_line = f"документ №{number} не найден"
+    for id_doc, doc in enumerate(documents):
+        if doc["number"] == number:
+            del (documents[id_doc])
+            out_line = f"документ №{number} удалён "
+            break
+    for id_doc, line in directories.items():
+        if number in line:
+            print(id_doc, number)
+            directories[id_doc].remove(number)
+            out_line += f"с полки №{number}"
+            break
+    return out_line
 
 
 def add_shelf(number, directories):
@@ -97,6 +130,18 @@ def main(documents, directories):
                 print(add_document(t, n, f, d, documents, directories))
             else:
                 print("Введен не полный набор данных!\n")
+        elif input_str in ("d", "delete"):
+            print(delete_line(input("Введите номер документа к удалению: "), documents, directories))
+        elif input_str in ("m", "move"):
+            temp_data = [str(x).strip() for x in
+                         input("Введите номер документа и новую полку через запятую:\n").split(",")]
+            if len(temp_data) >= 2:
+                n, d, *_ = temp_data
+                print(move_document(n, d, directories))
+            else:
+                print("Введен не полный набор данных!\n")
+        elif input_str in ("as", "add shelf"):
+            add_shelf(input("Введите номер новой полки"), directories)
 
 
 if __name__ == "__main__":
