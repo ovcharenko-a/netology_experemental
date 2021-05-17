@@ -43,10 +43,5 @@ class UnitTests(unittest.TestCase):
             self.assertEqual(result, result_assert)
 
 
-
 if __name__ == '__main__':
     unittest.main()
-
-    # with unittest.mock.patch('builtins.input', return_value='y'):
-    #     y = input()
-    #     self.assertEqual(y, "y")
