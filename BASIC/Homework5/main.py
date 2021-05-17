@@ -93,11 +93,10 @@ def delete_line(number, documents, directories):
             del (documents[id_doc])
             out_line = f"документ №{number} удалён "
             break
-    for id_doc, line in directories.items():
+    for id_line, line in directories.items():
         if number in line:
-            print(id_doc, number)
-            directories[id_doc].remove(number)
-            out_line += f"с полки №{number}"
+            directories[id_line].remove(number)
+            out_line += f"с полки №{id_line}"
             break
     return out_line
 
