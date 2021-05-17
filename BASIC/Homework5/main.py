@@ -41,7 +41,7 @@ def search_document(number, directories):
     number_ = str(number)
     for i, doc in directories.items():
         if number_ in doc:
-            document = f"документ №{number} на полке №{i + 1}"
+            document = f"документ №{number} на полке №{i}"
             break
     return document
 
